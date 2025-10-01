@@ -1,0 +1,11 @@
+:root { font-family: system-ui, sans-serif; }
+.container { max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+.nav a { margin-right: 1rem; }
+.row { display: flex; gap: .75rem; align-items: center; }
+.col { display: grid; gap: .75rem; }
+.card { border: 1px solid #ddd; border-radius: 8px; padding: .75rem; height: 260px; overflow: auto; }
+input, select, textarea, button { width: 100%; padding: .5rem .6rem; border: 1px solid #ccc; border-radius: 6px; }
+button { cursor: pointer; }
+.ok { color: #116611; }
+.error { color: #a00; }
+.muted { color: #666; font-size: .9rem; }

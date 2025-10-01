@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <title>Lämna tips</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Lämna tips (demo)</h1>
+    <form id="tip-form" class="col">
+      <label>Kategori
+        <select name="category" required>
+          <option value="sighting">Observation</option>
+          <option value="suspicious_activity">Misstänkt aktivitet</option>
+          <option value="infrastructure">Infrastruktur</option>
+          <option value="other">Annat</option>
+        </select>
+      </label>
+      <label>Beskrivning
+        <textarea name="message" minlength="10" required></textarea>
+      </label>
+      <div class="row">
+        <label>Plats (frivillig)
+          <input name="location" />
+        </label>
+        <label>E-post (frivillig)
+          <input type="email" name="contactEmail" />
+        </label>
+      </div>
+      <button>Skicka</button>
+    </form>
+    <div id="tip-status"></div>
+    <p class="muted">Tips sparas lokalt i din webbläsare (LocalStorage) i denna demo.</p>
+    <button id="export">Exportera tips som JSON</button>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const form = document.getElementById('tip-form');
+    const statusEl = document.getElementById('tip-status');
+    const exportBtn = document.getElementById('export');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const tip = Object.fromEntries(fd.entries());
+      if ((tip.message || '').length < 10) {
+        statusEl.textContent = 'Beskrivningen måste vara minst 10 tecken.';
+        statusEl.className = 'error';
+        return;
+      }
+      // Spara lokalt (demo)
+      const all = JSON.parse(localStorage.getItem('tips') || '[]');
+      all.push({ ...tip, createdAt: new Date().toISOString() });
+      localStorage.setItem('tips', JSON.stringify(all));
+      statusEl.textContent = 'Tack! Ditt tips är mottaget (lokalt sparat).';
+      statusEl.className = 'ok';
+      form.reset();
+    });
+
+    exportBtn.addEventListener('click', () => {
+      const data = localStorage.getItem('tips') || '[]';
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), { href: url, download: 'tips.json' });
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
+

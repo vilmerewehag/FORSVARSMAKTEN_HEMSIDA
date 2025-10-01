@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <title>AI-chatt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>AI-chatt (demo)</h1>
+    <form id="chat-form" class="row">
+      <input id="chat-input" placeholder="Skriv din fråga…" required />
+      <button>Skicka</button>
+    </form>
+    <div id="chat-log" class="card"></div>
+    <p class="muted">Obs! Svaret mockas i webbläsaren (ingen riktig AI).</p>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('chat-input');
+    const log = document.getElementById('chat-log');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = input.value.trim();
+      if (!user) return;
+      append(`Du: ${user}`);
+      // MOCKAD "AI"
+      const reply = `Generellt råd: följ officiella kanaler (t.ex. Krisinformation.se).
+Din fråga: "${user}"`;
+      append(`AI: ${reply}`);
+      input.value = '';
+    });
+
+    function append(text) {
+      const p = document.createElement('p');
+      p.textContent = text;
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+  </script>
+</body>
+</html>
